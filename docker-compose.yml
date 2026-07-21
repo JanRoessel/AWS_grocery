@@ -1,0 +1,40 @@
+# Local development stack: the app container + a throwaway PostgreSQL
+# instance. Mirrors what the Woche 4 task asks for ("lokal in Docker
+# ausfuehren, Verbindung zu PostgreSQL ueber host.docker.internal"), but uses
+# a Postgres *service* instead so it also works in CI/on Linux hosts where
+# host.docker.internal isn't always available. To point at a real local
+# Postgres on the host instead, set POSTGRES_URI to use host.docker.internal
+# and remove the "db" service/depends_on below.
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - grocery_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_URI: postgresql://postgres:postgres@db:5432/postgres
+      JWT_SECRET_KEY: local-dev-secret-change-me
+      USE_S3_STORAGE: "false"
+    ports:
+      - "8080:5000"
+
+volumes:
+  grocery_pg_data:

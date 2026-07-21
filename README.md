@@ -14,6 +14,44 @@
 
 ---
 
+## ☁️ AWS Cloud Deployment (dieser Fork)
+
+Dieser Fork ist Jan Rössels Projektarbeit im Rahmen von **Masterschool Cloud
+Engineering** (Mai–Juli 2026): dieselbe GroceryMate-Anwendung, deployed auf
+AWS mit Docker + Terraform.
+
+**Architektur:**
+
+```
+Internet → [Application Load Balancer] → [EC2 (Docker)] → [RDS PostgreSQL, privat]
+                                                        └→ [S3 Bucket, Avatare]
+```
+
+**Status:**
+
+| Komponente | Stand |
+|---|---|
+| EC2 / RDS / S3 / ALB | ✅ Manuell über AWS Console aufgesetzt (Wochen 2–7) |
+| Eigene `Dockerfile` (Multi-Stage: React-Build + Flask/Gunicorn) | ✅ |
+| `docker-compose.yml` für lokale Entwicklung | ✅ |
+| Terraform IaC (`infrastructure/`) für EC2, Security Groups, RDS, S3, ALB, IAM | ✅ |
+| CloudWatch-Monitoring / zusätzlicher AWS-Service (Woche 9) | 🚧 offen |
+
+**Lokal ausführen:**
+
+```bash
+docker compose up --build
+# App unter http://localhost:8080
+```
+
+**Auf AWS deployen:** siehe [`infrastructure/README.md`](infrastructure/README.md)
+für die Terraform-Anleitung.
+
+**Weitere Doku:** Wochen-für-Wochen-Fortschritt und offene Punkte stehen im
+verknüpften Obsidian-Vault unter `02 Projekte/AWS Cloud Practitioner/MSIT/`.
+
+---
+
 ## 📌 Table of Contents
 
 - [Overview](#-overview)

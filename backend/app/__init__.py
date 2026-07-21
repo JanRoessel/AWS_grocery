@@ -76,7 +76,17 @@ detect_environment()
 def fetch_frontend():
     """
     Fetches the latest frontend build from GitHub Releases and ensures it's placed in frontend/build.
+
+    Set SKIP_FRONTEND_FETCH=true to use whatever is already on disk as-is (e.g. a
+    frontend build baked into a Docker image at build time) without ever calling
+    out to GitHub. Without this, every container start would check
+    AlejandroRomanIbanez/AWS_grocery's releases and could silently overwrite a
+    custom frontend build with the upstream template's build.
     """
+    if os.getenv("SKIP_FRONTEND_FETCH", "false").lower() == "true":
+        print("SKIP_FRONTEND_FETCH is set - using the bundled frontend build as-is.")
+        return
+
     if os.path.exists(FRONTEND_BUILD_PATH):
         print("Frontend build is already present. Checking for updates...")
         latest_release_timestamp = get_github_release_timestamp()
