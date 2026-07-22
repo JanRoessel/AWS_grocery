@@ -79,3 +79,9 @@ variable "s3_bucket_name" {
   description = "Globally-unique S3 bucket name for user avatar storage"
   type        = string
 }
+
+variable "alarm_email" {
+  description = "E-Mail address for CloudWatch alarm notifications (optional - leer lassen wenn keine E-Mail gewünscht)"
+  type        = string
+  default     = ""
+}

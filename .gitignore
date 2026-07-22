@@ -1,6 +1,25 @@
-.idea/aws.xml
+# AWS credentials (NIE committen!)
+.env
+terraform.tfvars
+*.tfvars
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+*.egg-info/
+
+# IDE
+.idea/
+*.swp
+*~
+
+# Build & Dependencies
+node_modules/
 frontend/frontend-build.zip
 frontend/temp_extract/
 frontend/src/config.js~
-venv/
-*~
+
+# OS
+.DS_Store
+Thumbs.db
