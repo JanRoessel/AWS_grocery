@@ -1,7 +1,12 @@
 variable "aws_region" {
   description = "AWS region to deploy into"
   type        = string
-  default     = "eu-central-1"
+  # Matches the region used for the manually-built Woche 2-3 environment
+  # (ALB/EC2/RDS in eu-north-1) - keeps the door open for terraform apply
+  # to manage that same environment later instead of silently creating a
+  # second, parallel one in a different region. Override with -var if you
+  # ever do want a separate region.
+  default     = "eu-north-1"
 }
 
 variable "app_name" {
